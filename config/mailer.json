@@ -1,0 +1,19 @@
+{
+  "mailer": {
+    "template_root": "mail",
+    "defaults": {
+      "from": "noreply@m800.com",
+      "language": "en-US"
+    },
+    "smtp": {
+      "transport":{
+        "host": "192.168.14.9",
+        "port": 25,
+        "tls": {
+          "rejectUnauthorized": false
+        }
+      }
+    }
+  }
+}
+

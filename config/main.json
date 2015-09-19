@@ -1,0 +1,37 @@
+{
+  "containerName": "m800-mail-service",
+  "mongodb": {
+    "uri": "mongodb://localhost/m800-mail-service",
+    "options": {
+      "mongos": false,
+      "user": "",
+      "pass": "",
+      "server": {
+        "auto_reconnect": true,
+        "socketOptions": {
+          "keepAlive": 1,
+          "connectTimeoutMS": 3000
+        }
+      }
+    }
+  },
+  "logging": {
+    "winston": {
+      "transports": [{
+        "type": "winston.transports.Console",
+        "options": {
+          "level": "debug",
+          "colorize": true,
+          "timestamp": true,
+          "humanReadableUnhandledException": true
+        }
+      }, {
+      "type": "winston.transports.File",
+      "options": {
+        "filename": "logs/app.log",
+        "json": false
+      }
+      }]
+    }
+  }
+}
