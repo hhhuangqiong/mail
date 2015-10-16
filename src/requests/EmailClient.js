@@ -5,7 +5,7 @@ import {metaValidator} from '../collections/validators/emailMeta';
 import {templateValidator} from '../collections/validators/emailTemplate';
 
 /**
- * Create a new email request
+ * Create a new email client
  * This is supposed to be `require/import` in other app(s)
  *
  * @class
@@ -30,31 +30,38 @@ export default class EmailClient {
 
   /**
    * @callback sendCallback
-   * @param {NetworkError} err
-   * @param {String} token The token returned after the email created 
+   * @param {Error} err
+   * @param {String} token The token returned after the email created
    */
 
   /**
    * Submit the email based on meta information
    *
    * @param {Object} meta
-   * @param {Object} tmpl 
+   * @param {Object} template 
+   * @param {Object} [appMeta] 
    * @param {sendCallback} cb
    */
-  send(meta, tmpl, cb) {
+  send(meta, template, appMeta, cb) {
     // TODO more descriptive error message
     if(!metaValidator(meta)) return cb(new Error('Invalid `meta` data'));
-    if(!templateValidator(tmpl)) return cb(new Error('Invalid `tmpl` data'));
+    if(!templateValidator(template)) return cb(new Error('Invalid `template` data'));
 
-    const targetPath = this._buildTargetPath(tmpl.name);
+    if (arguments.length === 3) {
+      cb = appMeta;
+      appMeta = {};
+    }
+
+    const targetPath = this._buildTargetPath(template.name);
 
     request.post(targetPath)
-      .send(Object.assign({}, meta, tmpl)) // all in top-level
+      .send({ ...meta, ...template, appMeta })
       .end((err, res) => {
         // other kind of error?
         if (err || res.status >= 400) return cb(err);
         cb(null, res.body.token);
       });
   }
-
 }
+
+
