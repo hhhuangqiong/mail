@@ -1,5 +1,5 @@
 {
-  "name": "m800-common-mail",
+  "name": "m800-mail-service",
   "version": "0.1.0",
   "private": true,
   "scripts": {
