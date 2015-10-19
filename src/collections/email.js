@@ -8,6 +8,9 @@ import {templateSchema, templateValidator} from './validators/emailTemplate';
 
 let collectionName = 'Email';
 let schema = new mongoose.Schema({
+  appMeta: {
+    type: mongoose.Schema.Types.Mixed
+  },
   meta: {
     required: true,
     type: metaSchema,

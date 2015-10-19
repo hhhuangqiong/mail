@@ -1,8 +1,12 @@
-import Email from '../collections/email';
+import _      from 'lodash';
 import logger from 'winston';
+import Email  from '../collections/email';
 
 export default class EmailService {
 
+  /**
+   * @param {Object} mailer
+   */
   constructor(mailer) {
     if (!mailer) throw new Error('`mailer` is required');
     this._mailer = mailer;
@@ -21,11 +25,21 @@ export default class EmailService {
   create(emailInfo, cb) {
     let email = new Email(emailInfo);
 
+    // have to trigger the generation manually
+    const tokenInfo = Email.generateToken();
+    email.set('token', tokenInfo);
+
     const doc = email.toObject();
-    const {name, language, data = {}} = doc.template;
+
+    let  {name, language} = doc.template;
+
+    const tmplOpts = {name, language} ;
+    const tmplData = { ...emailInfo.template.data, ...tokenInfo }; 
+    
+    logger.info('Will `send` with template data: %j', tmplData, {});
 
     // @see {@link https://github.com/andris9/Nodemailer#sending-mail}
-    this._mailer.send(doc.meta, { name, language }, data, function(err, info) {
+    this._mailer.send(doc.meta, tmplOpts, tmplData, function(err, info) {
       logger.debug('info from `send`', info);
       if (err) {
         logger.error('Failed to send "%s" with template "%s"', email.meta.to, name);
