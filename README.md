@@ -23,7 +23,10 @@ router.post('/whatever', function(req, res) {
     to: "gilbertwong@maaii.com"
   }, {
     name: "test",
-    language: "en-US"
+    language: "en-US",
+    data: {
+      host: "http://partner.m800.com"
+    }
   }, function(err, token) {
     if(err) logger.error('Failed to send email', err)
     res.json({ token: token });
