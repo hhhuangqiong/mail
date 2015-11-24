@@ -1,6 +1,7 @@
 let express    = require('express');
 let bodyParser = require('body-parser');
 let path       = require('path');
+import healthcheck from 'm800-health-check';
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const CONFIG_DIR   = path.resolve(PROJECT_ROOT, 'config');
@@ -31,6 +32,9 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+// integrate m800 common
+healthcheck(app);
+
 // error handlers
 
 // development error handler
@@ -54,5 +58,6 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
 
 module.exports = app;
