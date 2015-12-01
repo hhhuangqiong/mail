@@ -14,24 +14,5 @@
         }
       }
     }
-  },
-  "logging": {
-    "winston": {
-      "transports": [{
-        "type": "winston.transports.Console",
-        "options": {
-          "level": "debug",
-          "colorize": true,
-          "timestamp": true,
-          "humanReadableUnhandledException": true
-        }
-      }, {
-      "type": "winston.transports.File",
-      "options": {
-        "filename": "logs/app.log",
-        "json": false
-      }
-      }]
-    }
   }
 }

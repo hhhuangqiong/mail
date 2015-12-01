@@ -1,0 +1,28 @@
+{
+  "logging": {
+    "winston": {
+      "meta": {
+        "app": "m800-mail-service",
+        "type": "logs",
+        "env": "dev",
+        "instance": "server-instance-name"
+      },
+      "transports": [{
+        "type": "winston.transports.Console",
+        "options": {
+          "level": "debug",
+          "colorize": true,
+          "timestamp": true,
+          "humanReadableUnhandledException": true
+        }
+      }, {
+        "type": "winston.transports.Logstash",
+        "options": {
+          "port": 9997,
+          "host": "192.168.118.26"
+        }
+      }]
+    }
+  }
+}
+
