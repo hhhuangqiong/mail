@@ -56,5 +56,5 @@ export default class EmailService {
         cb(null, saved);
       });
     });
-  }
+  }  
 }
