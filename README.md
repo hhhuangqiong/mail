@@ -1,4 +1,17 @@
-# Project
+# M800 mail service
+
+## Build
+
+### Enviroment Variables
+
+LOGSTASH_URL
+
+- to where [Winston Logstash](http://github.com/jaakkos/winston-logstash) will
+  publish logging information
+- must start with scheme (i.e. http/https)
+  - [More information](https://github.com/garycourt/uri-js#scheme-extendable)
+- e.g., `export LOGSTASH_URL=http://192.168.118.26:9997`
+
 
 ## APIs
 
@@ -12,7 +25,6 @@ POST /tokens/:token
 # send (and create) the email
 POST /emails
 ```
-
 
 ```
 // sample code for using email client
@@ -34,9 +46,6 @@ router.post('/whatever', function(req, res) {
 });
 ```
 
-## Template solution
-
-- https://github.com/mailgun/transactional-email-templates
 
 ## TODO
 
@@ -49,3 +58,6 @@ router.post('/whatever', function(req, res) {
 - https://github.com/niftylettuce/node-email-templates/pull/147
 - https://www.campaignmonitor.com/css/
 
+### Template solution
+
+- https://github.com/mailgun/transactional-email-templates

@@ -9,9 +9,9 @@
   },
   "dependencies": {
     "babel-core": "^6.1.21",
+    "babel-plugin-add-module-exports": "^0.1.1",
     "babel-preset-es2015": "^6.1.18",
     "babel-preset-stage-2": "^6.1.18",
-    "babel-plugin-add-module-exports": "^0.1.1",
     "body-parser": "~1.13.2",
     "bottlejs": "^1.0.0",
     "debug": "~2.2.0",
@@ -21,6 +21,7 @@
     "express-validator": "^2.17.1",
     "lodash": "^3.10.1",
     "m800-health-check": "^0.1.0",
+    "m800-winston": "^0.1.0",
     "mongoose": "^4.1.7",
     "morgan": "~1.6.1",
     "nconf": "^0.8.0",
