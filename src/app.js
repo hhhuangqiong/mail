@@ -33,15 +33,15 @@ app.use(require('express-validator')());
 
 app.use('/', require('./routes/index'));
 
+// integrate m800 common
+healthcheck(app);
+
 // catch 404 and forward to error handler
 app.use(function notFound(req, res, next) {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
-
-// integrate m800 common
-healthcheck(app);
 
 // error handlers
 
