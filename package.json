@@ -1,6 +1,6 @@
 {
   "name": "m800-mail-service",
-  "version": "0.1.2",
+  "version": "0.2.2",
   "private": true,
   "scripts": {
     "lint": "eslint src",
@@ -25,8 +25,8 @@
     "mongoose": "^4.1.7",
     "morgan": "~1.6.1",
     "nconf": "^0.8.0",
-    "nodemailer": "^1.4.0",
-    "nodemailer-smtp-transport": "^1.0.3",
+    "nodemailer": "^2.3.0",
+    "nodemailer-smtp-transport": "^2.4.1",
     "rand-token": "^0.2.1",
     "superagent": "^1.4.0",
     "winston": "^2.1.0",

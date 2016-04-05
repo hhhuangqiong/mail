@@ -32,13 +32,12 @@ export default class EmailService {
 
     const {name, language} = doc.template;
 
-    const tmplOpts = {name, language};
+    const tmplOpts = { name, language };
     const tmplData = { ...emailInfo.template.data, ...tokenInfo };
 
     logger.info('Will `send` with template data: %j', tmplData, {});
 
-    // @see {@link https://github.com/andris9/Nodemailer#sending-mail}
-    this._mailer.send(doc.meta, tmplOpts, tmplData, function(err, info) {
+    this._mailer.send(doc.meta, tmplOpts, tmplData, (err, info) => {
       const { to } = email.meta;
 
       logger.debug(`Sending email to ${to}`);
@@ -50,8 +49,9 @@ export default class EmailService {
       }
 
       email.set('deliveredAt', Date.now());
-      email.save(function(saveErr, saved) {
-        // how to prevent "undefined"?
+      email.set('meta.subject', info.render.subject);
+
+      email.save((saveErr, saved) => {
         if (saveErr) {
           logger.error('Failed to persist email after send', saveErr);
           return cb(saveErr);

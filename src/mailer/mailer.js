@@ -1,4 +1,4 @@
-let logger = require('winston');
+const logger = require('winston');
 
 /**
  * This mailer is a thin wrapping using the passed transporter combined with
@@ -9,7 +9,7 @@ let logger = require('winston');
  * @constructor
  * @param {Object} transporters 1 of the supported transporter (#sendMail method)
  */
-var Mailer = module.exports = function(transporter) {
+const Mailer = module.exports = function(transporter) {
   if (!transporter) {
     throw new Error('transporter is required');
   }
@@ -25,18 +25,17 @@ var Mailer = module.exports = function(transporter) {
  * @param {Function} cb
  */
 Mailer.prototype.sendHtmlContent = function(mailOpts, content, cb) {
-  //TODO validate mailOpts
+  // TODO validate mailOpts
   if (!mailOpts || !content) {
     throw new Error('`mailOpts & `content` are required');
   }
 
   mailOpts.html = content;
-  this._transporter.sendMail(mailOpts, function(err, info) {
+
+  this._transporter.sendMail(mailOpts, (err, info) => {
     logger.debug('`sendMail` info: %j', info, {});
 
-    if (err) {
-      return cb(err);
-    }
+    if (err) return cb(err);
 
     logger.info('Sending email with %j', mailOpts, {});
     cb(null, info);

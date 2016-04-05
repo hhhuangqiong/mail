@@ -30,7 +30,6 @@ POST /emails
 // sample code for using email client
 router.post('/whatever', function(req, res) {
   return emailClient.send({
-    subject: "test",
     from: "noreply@m800.com",
     to: "gilbertwong@maaii.com"
   }, {
