@@ -1,10 +1,10 @@
-FROM node:4.1
+FROM node:4
 
 ENV NODE_ENV=production
 
 # This dockerfile is designed to run from the jenkins build server, i.e. please
 # run 'npm install' and 'gulp' to prepare all dependencies and build the project.
-# The built/compiled/installed dependencies with be copied into the docker image 
+# The built/compiled/installed dependencies with be copied into the docker image
 # using the COPY command instead.
 WORKDIR /www
 COPY . .
@@ -12,5 +12,7 @@ COPY . .
 EXPOSE 3000
 
 RUN npm rebuild
+
+USER nobody
 
 CMD ["node", "bin/www"]
