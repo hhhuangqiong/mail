@@ -3,6 +3,7 @@
   "version": "0.2.2",
   "private": true,
   "scripts": {
+    "doc": "gitbook",
     "lint": "eslint src",
     "start": "node ./bin/www",
     "test": "NODE_PATH=src mocha --recursive test/unit"
@@ -37,6 +38,7 @@
     "eslint": "^1.5.1",
     "eslint-config-airbnb": "^1.0.0",
     "eslint-plugin-react": "^3.4.2",
+    "gitbook-cli": "^2.1.3",
     "mocha": "^2.3.3"
   }
 }

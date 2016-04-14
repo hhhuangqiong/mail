@@ -1,0 +1,10 @@
+.*
+Dockerfile
+bin
+config
+docker-compose.yml
+mail
+node_modules
+package.json
+src
+test
