@@ -1,7 +1,7 @@
 {
   "containerName": "m800-mail-service",
   "mongodb": {
-    "uri": "mongodb://localhost/m800-mail-service",
+    "uri": "mongodb://192.168.99.100/m800-mail-service",
     "options": {
       "mongos": false,
       "user": "",
