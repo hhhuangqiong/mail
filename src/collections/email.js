@@ -1,46 +1,46 @@
-let mongoose  = require('mongoose');
-let randtoken = require('rand-token');
+const mongoose = require('mongoose');
+const randtoken = require('rand-token');
 
 import _ from 'lodash';
 
 import {metaSchema, metaValidator} from './validators/emailMeta';
 import {templateSchema, templateValidator} from './validators/emailTemplate';
 
-let collectionName = 'Email';
-let schema = new mongoose.Schema({
+const collectionName = 'Email';
+const schema = new mongoose.Schema({
   appMeta: {
-    type: mongoose.Schema.Types.Mixed
+    type: mongoose.Schema.Types.Mixed,
   },
   meta: {
     required: true,
     type: metaSchema,
-    validate: [ metaValidator, '"{PATH}" must have "from", "to", and "subject"' ]
+    validate: [ metaValidator, '"{PATH}" must have "from", "to", and "subject"' ],
   },
   template: {
     required: true,
     type: templateSchema,
-    validate: [ templateValidator, '"{PATH}" must have "name"' ]
+    validate: [ templateValidator, '"{PATH}" must have "name"' ],
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   deliveredAt: {
-    type: Date
+    type: Date,
   },
   token: {
     value: {
       type: String,
-      required: true
+      required: true,
       // unique: true?
     },
     createdAt: {
       type: Date,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 }, {
-  collection: collectionName
+  collection: collectionName,
 });
 
 /**
@@ -49,16 +49,23 @@ let schema = new mongoose.Schema({
  * @param {String} val, token value
  * @param {Function} cb callback
  */
-schema.static('withToken', withToken);
 function withToken(val, cb) {
   return this.findOne({'token.value': val}, cb);
+}
+schema.static('withToken', withToken);
+
+function generateToken() {
+  return {
+    value: randtoken.generate(16), // stick to this strategy for now
+    createdAt: Date.now(),
+  };
 }
 
 /**
  * If succeeded, a new token will be returned in the callback
  */
 schema.static('refreshToken', function(val, cb) {
-  let newToken = generateToken();
+  const newToken = generateToken();
 
   this.findOneAndUpdate({'token.value': val}, {'token': newToken}, function(err, old) {
     if (err) return cb(err);
@@ -71,7 +78,7 @@ schema.static('refreshToken', function(val, cb) {
 // TODO helper method to make quering with date easier
 
 /**
- * @method generateToken 
+ * @method generateToken
  *
  * useful for refreshing token & related properties
  *
@@ -79,12 +86,6 @@ schema.static('refreshToken', function(val, cb) {
  */
 schema.static('generateToken', generateToken);
 
-function generateToken() {
-  return {
-    value: randtoken.generate(16), // stick to this strategy for now
-    createdAt: Date.now()
-  };
-}
 
 schema.pre('validate', function(next) {
   // NB: mongoose seems to create the token part automatically
@@ -103,7 +104,7 @@ schema.pre('validate', function(next) {
  * @chainable
  */
 ['name', 'data'].forEach((m) => {
-  let mn = ['template', m.substring(0, 1).toUpperCase(), m.substring(1)].join('');
+  const mn = ['template', m.substring(0, 1).toUpperCase(), m.substring(1)].join('');
   schema.methods[mn] = function(val) {
     if (!val) {
       return this.template[m];
@@ -117,4 +118,3 @@ schema.pre('validate', function(next) {
 schema.index({'token.value': 1});
 
 module.exports = mongoose.model(collectionName, schema);
-

@@ -3,7 +3,7 @@
 import _ from 'lodash';
 import logger from 'winston';
 
-let mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 /**
  * Initialize database connection
@@ -17,7 +17,7 @@ function initialize(mongodbURI, mongodbOpts, cb) {
     throw new Error('Both uri & options are required');
   }
 
-  //TODO filter sensitive information (e.g., password)
+  // TODO filter sensitive information (e.g., password)
   logger.info('Connecting to Mongo on "%s" with %j', mongodbURI, mongodbOpts, {});
   mongoose.connect(mongodbURI, mongodbOpts);
 
@@ -43,4 +43,3 @@ function initialize(mongodbURI, mongodbOpts, cb) {
 }
 
 module.exports = initialize;
-

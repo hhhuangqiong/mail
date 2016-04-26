@@ -1,6 +1,6 @@
 /** @module initializers/nconf */
 
-import fs    from 'fs';
+import fs from 'fs';
 import nconf from 'nconf';
 
 /**
@@ -21,13 +21,12 @@ export default function initialize(configDir, opts = {}) {
       nconf.file(f, {
         file: f,
         dir: configDir,
-        search: true
+        search: true,
       });
     }
   });
 
-  console.info('Loading files under "%s"', configDir);
+  console.info('Loading files under "%s"', configDir); // eslint-disable-line no-console
 
   return nconf;
 }
-

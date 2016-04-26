@@ -1,20 +1,20 @@
-let mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 export const metaSchema = {
   from: {
     type: String,
-    trim: true
+    trim: true,
   },
   to: {
     // single (String) or multiple (Array)
-    type: mongoose.Schema.Types.Mixed
+    type: mongoose.Schema.Types.Mixed,
   },
   subject: {
     type: String,
-    trim: true
+    trim: true,
   },
-  cc:  { type: Array },
-  bcc: { type: Array }
+  cc: { type: Array },
+  bcc: { type: Array },
 };
 
 /**
@@ -24,11 +24,11 @@ export const metaSchema = {
  * @return {Boolean} result
  */
 export function metaValidator(val = {}) {
-  let {from, to, subject} = val;
+  const {from, to, subject} = val;
 
   if (!from || !to || !subject) {
     return false;
-  } else {
+  } else { // eslint-disable-line no-else-return
     return true;
   }
 }

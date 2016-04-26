@@ -14,7 +14,7 @@ export default class EmailClient {
 
   /**
    * @constructs
-   * @param {Object} opts 
+   * @param {Object} opts
    * @param {string} opts.baseUrl Base URL to the email service
    * @param {string} [opts.basePath=emails] Base path for the email route
    */
@@ -38,18 +38,20 @@ export default class EmailClient {
    * Submit the email based on meta information
    *
    * @param {Object} meta
-   * @param {Object} template 
-   * @param {Object} [appMeta] 
+   * @param {Object} template
+   * @param {Object} [appMeta]
    * @param {sendCallback} cb
    */
   send(meta, template, appMeta, cb) {
     // TODO more descriptive error message
-    if(!metaValidator(meta)) return cb(new Error('Invalid `meta` data'));
-    if(!templateValidator(template)) return cb(new Error('Invalid `template` data'));
+    if (!metaValidator(meta)) return cb(new Error('Invalid `meta` data'));
+    if (!templateValidator(template)) return cb(new Error('Invalid `template` data'));
 
     if (arguments.length === 3) {
+      /* eslint-disable no-param-reassign */
       cb = appMeta;
       appMeta = {};
+      /* eslint-enable no-param-reassign */
     }
 
     const targetPath = this._buildTargetPath(template.name);
@@ -63,5 +65,3 @@ export default class EmailClient {
       });
   }
 }
-
-

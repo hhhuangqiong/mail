@@ -11,10 +11,10 @@ import path from 'path';
 export default function init(nconf) {
   // intentionally not calling with `new`;
   // otherwise `fetchContainerInstance` cannot work
-  let ioc = Bottle(nconf.get('containerName'));
+  const ioc = Bottle(nconf.get('containerName')); // eslint-disable-line new-cap
 
-  ioc.factory('SmtpTransport', container => {
-    let transport = require('../mailer/transports/smtp');
+  ioc.factory('SmtpTransport', () => {
+    const transport = require('../mailer/transports/smtp');
     return transport(nconf.get('mailer:smtp:transport'));
   });
 
@@ -32,4 +32,3 @@ export default function init(nconf) {
 
   return ioc;
 }
-

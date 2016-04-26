@@ -29,4 +29,3 @@ export function fetchDep(name, depIdentifer) {
     }, ioc.container);
   }
 }
-
