@@ -4,7 +4,7 @@ import path from 'path';
 import _ from 'lodash';
 import logger from 'winston';
 import nconf from 'nconf';
-import {Router} from 'express';
+import { Router } from 'express';
 
 const fetchDep = _.partial(require('../utils/ioc').fetchDep, nconf.get('containerName'));
 const MAILER_TEMPLATE_ROOT = fetchDep('MAILER_TEMPLATE_ROOT');
@@ -27,8 +27,8 @@ fs.readdirSync(MAILER_TEMPLATE_ROOT).forEach(f => {
     // TODO configurable base?
     const routePath = `/emails/${f}`;
 
-    router.post(routePath, validateEmailInfo, assembleEmailInfo, (req, res) => { // eslint-disable-line no-use-before-define
-      const { emailInfo } = req._data;
+    router.post(routePath, validateEmailInfo, assembleEmailInfo, (req, res) => { // eslint-disable-line no-use-before-define, max-len
+      const { emailInfo } = req._data; // eslint-disable-line no-underscore-dangle
 
       emailService.create(emailInfo, (err, doc) => {
         if (err) {
@@ -38,7 +38,7 @@ fs.readdirSync(MAILER_TEMPLATE_ROOT).forEach(f => {
             message: `Failed to deliver email to ${emailInfo.meta.to}`,
           });
         }
-        res.status(201).json({ token: doc.token.value });
+        return res.status(201).json({ token: doc.token.value });
       });
     });
 
@@ -55,7 +55,7 @@ function validateEmailInfo(req, res, next) {
   if (errors) {
     // what to do?
     res.status(400).json({
-      errors: errors,
+      errors,
     });
   } else {
     next();
@@ -94,7 +94,7 @@ function assembleEmailInfo(req, res, next) {
     },
   };
 
-  req._data = { emailInfo };
+  req._data = { emailInfo }; // eslint-disable-line no-underscore-dangle, no-param-reassign
 
   next();
 }
@@ -109,7 +109,7 @@ router.get('/tokens/:token', (req, res) => {
       return res.status(404).json({ token: '' });
     }
 
-    res.json({
+    return res.json({
       token: emailInfo.token,
       appMeta: emailInfo.appMeta,
     });
@@ -122,7 +122,7 @@ router.post('/tokens/:token', (req, res) => {
   Email.refreshToken(token, (err, newTokenInfo) => {
     if (err) return genericErrorResponse(res, err); // eslint-disable-line no-use-before-define
 
-    res.json({
+    return res.json({
       token: newTokenInfo,
     });
   });

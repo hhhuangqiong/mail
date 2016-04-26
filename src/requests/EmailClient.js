@@ -1,8 +1,8 @@
 import request from 'superagent';
 import url from 'url';
 
-import {metaValidator} from '../collections/validators/emailMeta';
-import {templateValidator} from '../collections/validators/emailTemplate';
+import { metaValidator } from '../collections/validators/emailMeta';
+import { templateValidator } from '../collections/validators/emailTemplate';
 
 /**
  * Create a new email client
@@ -20,12 +20,12 @@ export default class EmailClient {
    */
   constructor(opts = {}) {
     if (!opts.baseUrl) throw new Error('`baseUrl` is required`');
-    this._baseUrl = opts.baseUrl;
-    this._basePath = opts.basePath || 'emails';
+    this.baseUrl = opts.baseUrl;
+    this.basePath = opts.basePath || 'emails';
   }
 
-  _buildTargetPath(templateName) {
-    return url.resolve(this._baseUrl, this._basePath) + '/' + templateName;
+  buildTargetPath(templateName) {
+    return `${url.resolve(this.baseUrl, this.basePath)}/${templateName}`;
   }
 
   /**
@@ -47,21 +47,21 @@ export default class EmailClient {
     if (!metaValidator(meta)) return cb(new Error('Invalid `meta` data'));
     if (!templateValidator(template)) return cb(new Error('Invalid `template` data'));
 
-    if (arguments.length === 3) {
+    if (arguments.length === 3) { // eslint-disable-line prefer-rest-params
       /* eslint-disable no-param-reassign */
       cb = appMeta;
       appMeta = {};
       /* eslint-enable no-param-reassign */
     }
 
-    const targetPath = this._buildTargetPath(template.name);
+    const targetPath = this.buildTargetPath(template.name);
 
-    request.post(targetPath)
+    return request.post(targetPath)
       .send({ ...meta, ...template, appMeta })
       .end((err, res) => {
         // other kind of error?
         if (err || res.status >= 400) return cb(err);
-        cb(null, res.body.token);
+        return cb(null, res.body.token);
       });
   }
 }

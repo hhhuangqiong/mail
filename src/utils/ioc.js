@@ -18,14 +18,13 @@ export function fetchContainerInstance(name) {
  * @param {String} name The name of the container instantiated
  * @param {String} depIdentifier Dependency identifier
  *
- * @return {*} The registered dependency
+ * @return {*|null} The registered dependency
  */
 export function fetchDep(name, depIdentifer) {
   const ioc = fetchContainerInstance(name);
   if (ioc) {
     // TODO prevent the 'identifier.' case
-    return depIdentifer.split('.').reduce((result, key) => {
-      return result[key];
-    }, ioc.container);
+    return depIdentifer.split('.').reduce((result, key) => result[key], ioc.container);
   }
+  return null;
 }

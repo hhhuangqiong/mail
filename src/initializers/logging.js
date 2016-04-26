@@ -19,14 +19,14 @@ function prepareMetaInGlobal(meta) {
 }
 
 function wrapOriginalLevels(winstonInst) {
-  const _origLevels = {};
+  const origLevels = {};
 
-  Object.keys(winstonInst.levels).forEach(function(level) {
-    _origLevels[level] = winstonInst[level];
+  Object.keys(winstonInst.levels).forEach((level) => {
+    origLevels[level] = winstonInst[level];
 
-    winstonInst[level] = function() {
-      const args = Array.prototype.slice.call(arguments);
-      return _origLevels[level].apply(winstonInst, args.concat(logstashMeta)); // eslint-disable-line no-undef
+    winstonInst[level] = function () { // eslint-disable-line no-param-reassign
+      const args = Array.prototype.slice.call(arguments); // eslint-disable-line prefer-rest-params
+      return origLevels[level].apply(winstonInst, args.concat(logstashMeta)); // eslint-disable-line no-undef, max-len
     };
   });
 

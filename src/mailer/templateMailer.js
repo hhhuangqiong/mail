@@ -3,16 +3,16 @@ const fs = require('fs');
 const logger = require('winston');
 const path = require('path');
 
-const TemplateMailer = module.exports = function(mailer, opts) {
+const TemplateMailer = module.exports = function (mailer, opts) {
   if (!mailer) {
     throw new Error('`mailer` is required');
   }
   this.mailer = mailer;
 
-  this._templatesDir = opts.templatesDir;
+  this.templatesDir = opts.templatesDir;
 
-  if (!fs.existsSync(this._templatesDir)) {
-    throw new Error('`templatesDir` "' + this._templatesDir + '" doesn\'t not exist');
+  if (!fs.existsSync(this.templatesDir)) {
+    throw new Error(`'templatesDir' ${this.templatesDir} doesn't not exist'`);
   }
 };
 
@@ -34,26 +34,26 @@ const TemplateMailer = module.exports = function(mailer, opts) {
  * @param {Object}
  * @param {sendCallback} cb
  */
-TemplateMailer.prototype.send = function(mailOpts, tmplOpts, tmplData, cb) {
+TemplateMailer.prototype.send = function (mailOpts, tmplOpts, tmplData, cb) {
   // TODO validate `mailOpts`
   if (!mailOpts || !tmplOpts || !tmplData) {
     throw new Error('Invalid number of arguments');
   }
 
   // TBC combine opts & data?
-  this._tmplContent(tmplOpts, tmplData, (err, render) => {
+  this.tmplContent(tmplOpts, tmplData, (err, render) => {
     if (err) return cb(err);
 
     const { subject, html } = render;
 
-    mailOpts.subject = subject;
+    mailOpts.subject = subject; // eslint-disable-line no-param-reassign
 
-    this.mailer.sendHtmlContent(mailOpts, html, (sendErr, response) => {
+    return this.mailer.sendHtmlContent(mailOpts, html, (sendErr, response) => {
       if (sendErr) return cb(sendErr);
 
-      logger.info('Sent email using template "%j" with %j; response: %j', tmplOpts, tmplData, response, {});
+      logger.info('Sent email using template "%j" with %j; response: %j', tmplOpts, tmplData, response, {}); // eslint-disable-line max-len
 
-      cb(null, { render, response });
+      return cb(null, { render, response });
     });
   });
 };
@@ -66,12 +66,12 @@ TemplateMailer.prototype.send = function(mailOpts, tmplOpts, tmplData, cb) {
  * @param {Object} tmplData
  * @param {Function} cb
  */
-TemplateMailer.prototype._tmplContent = function(tmplOpts, tmplData, cb) {
+TemplateMailer.prototype.tmplContent = function (tmplOpts, tmplData, cb) {
   // TODO language resolution strategy here; stricter validation
-  const {name, language} = tmplOpts;
+  const { name, language } = tmplOpts;
 
   // TODO no check of directory existence?!
-  const email = new EmailTemplate(path.join(this._templatesDir, name, language));
+  const email = new EmailTemplate(path.join(this.templatesDir, name, language));
 
   // reason for not using `renderHtml`: no documentation yet
   email.render(tmplData, (err, result) => {
@@ -80,6 +80,6 @@ TemplateMailer.prototype._tmplContent = function(tmplOpts, tmplData, cb) {
       return cb(err);
     }
 
-    cb(null, result);
+    return cb(null, result);
   });
 };

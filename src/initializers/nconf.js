@@ -15,7 +15,7 @@ export default function initialize(configDir, opts = {}) {
   nconf.argv();
   nconf.env(opts.envSeparator || '__');
 
-  fs.readdirSync(configDir).map(function(f) {
+  fs.readdirSync(configDir).forEach((f) => {
     // TODO more strict checking
     if (f.indexOf('.js') !== -1) {
       nconf.file(f, {

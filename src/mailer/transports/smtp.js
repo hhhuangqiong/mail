@@ -9,6 +9,6 @@ const smtpTransport = require('nodemailer-smtp-transport');
  *
  * @see {@link https://github.com/andris9/nodemailer-smtp-transport#usage}
  */
-export default function(opts = {}) {
+export default function (opts = {}) {
   return nodemailer.createTransport(smtpTransport(opts));
 }

@@ -3,8 +3,8 @@ const randtoken = require('rand-token');
 
 import _ from 'lodash';
 
-import {metaSchema, metaValidator} from './validators/emailMeta';
-import {templateSchema, templateValidator} from './validators/emailTemplate';
+import { metaSchema, metaValidator } from './validators/emailMeta';
+import { templateSchema, templateValidator } from './validators/emailTemplate';
 
 const collectionName = 'Email';
 const schema = new mongoose.Schema({
@@ -14,12 +14,12 @@ const schema = new mongoose.Schema({
   meta: {
     required: true,
     type: metaSchema,
-    validate: [ metaValidator, '"{PATH}" must have "from", "to", and "subject"' ],
+    validate: [metaValidator, '"{PATH}" must have "from", "to", and "subject"'],
   },
   template: {
     required: true,
     type: templateSchema,
-    validate: [ templateValidator, '"{PATH}" must have "name"' ],
+    validate: [templateValidator, '"{PATH}" must have "name"'],
   },
   createdAt: {
     type: Date,
@@ -50,7 +50,7 @@ const schema = new mongoose.Schema({
  * @param {Function} cb callback
  */
 function withToken(val, cb) {
-  return this.findOne({'token.value': val}, cb);
+  return this.findOne({ 'token.value': val }, cb);
 }
 schema.static('withToken', withToken);
 
@@ -64,14 +64,14 @@ function generateToken() {
 /**
  * If succeeded, a new token will be returned in the callback
  */
-schema.static('refreshToken', function(val, cb) {
+schema.static('refreshToken', function (val, cb) {
   const newToken = generateToken();
 
-  this.findOneAndUpdate({'token.value': val}, {'token': newToken}, function(err, old) {
+  this.findOneAndUpdate({ 'token.value': val }, { token: newToken }, (err, old) => {
     if (err) return cb(err);
-    if (!old) return cb(new Error('Token (' + val + ') not found'));
+    if (!old) return cb(new Error(`Token (${val}) not found`));
 
-    cb(null, newToken);
+    return cb(null, newToken);
   });
 });
 
@@ -87,7 +87,7 @@ schema.static('refreshToken', function(val, cb) {
 schema.static('generateToken', generateToken);
 
 
-schema.pre('validate', function(next) {
+schema.pre('validate', function (next) {
   // NB: mongoose seems to create the token part automatically
   if (!_.get(this.token, 'value')) {
     this.token = this.constructor.generateToken();
@@ -105,7 +105,7 @@ schema.pre('validate', function(next) {
  */
 ['name', 'data'].forEach((m) => {
   const mn = ['template', m.substring(0, 1).toUpperCase(), m.substring(1)].join('');
-  schema.methods[mn] = function(val) {
+  schema.methods[mn] = function (val) {
     if (!val) {
       return this.template[m];
     }
@@ -115,6 +115,6 @@ schema.pre('validate', function(next) {
   };
 });
 
-schema.index({'token.value': 1});
+schema.index({ 'token.value': 1 });
 
 module.exports = mongoose.model(collectionName, schema);

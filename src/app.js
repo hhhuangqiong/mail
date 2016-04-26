@@ -16,7 +16,7 @@ nconf.overrides({
 
 const loggingKey = 'logging:winston:transports';
 const transports = [].concat(nconf.get(loggingKey));
-const logstashTransport = require('m800-winston/lib/util')('LOGSTASH_URL', 'winston.transports.Logstash');
+const logstashTransport = require('m800-winston/lib/util')('LOGSTASH_URL', 'winston.transports.Logstash'); // eslint-disable-line max-len
 if (logstashTransport) {
   nconf.set(loggingKey, transports.concat(logstashTransport));
 }
@@ -37,7 +37,7 @@ app.use('/', require('./routes/index'));
 healthcheck(app);
 
 // catch 404 and forward to error handler
-app.use(function notFound(req, res, next) {
+app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);

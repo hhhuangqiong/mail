@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
  */
 export function templateValidator(val = {}) {
   // TODO more flexible checking on `language` i.e. allow both 'en-US' and 'en'
-  const {name, language} = val;
+  const { name, language } = val;
   return !!name && !!language;
 }
 

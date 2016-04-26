@@ -8,7 +8,7 @@ export default class EmailService {
    */
   constructor(mailer) {
     if (!mailer) throw new Error('`mailer` is required');
-    this._mailer = mailer;
+    this.mailer = mailer;
   }
 
   /**
@@ -30,14 +30,14 @@ export default class EmailService {
 
     const doc = email.toObject();
 
-    const {name, language} = doc.template;
+    const { name, language } = doc.template;
 
     const tmplOpts = { name, language };
     const tmplData = { ...emailInfo.template.data, ...tokenInfo };
 
     logger.info('Will `send` with template data: %j', tmplData, {});
 
-    this._mailer.send(doc.meta, tmplOpts, tmplData, (err, info) => {
+    this.mailer.send(doc.meta, tmplOpts, tmplData, (err, info) => {
       const { to } = email.meta;
 
       logger.debug(`Sending email to ${to}`);
@@ -51,12 +51,12 @@ export default class EmailService {
       email.set('deliveredAt', Date.now());
       email.set('meta.subject', info.render.subject);
 
-      email.save((saveErr, saved) => {
+      return email.save((saveErr, saved) => {
         if (saveErr) {
           logger.error('Failed to persist email after send', saveErr);
           return cb(saveErr);
         }
-        cb(null, saved);
+        return cb(null, saved);
       });
     });
   }

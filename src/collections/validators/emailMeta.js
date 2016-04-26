@@ -24,7 +24,7 @@ export const metaSchema = {
  * @return {Boolean} result
  */
 export function metaValidator(val = {}) {
-  const {from, to, subject} = val;
+  const { from, to, subject } = val;
 
   if (!from || !to || !subject) {
     return false;
