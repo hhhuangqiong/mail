@@ -6,7 +6,8 @@
     "doc": "gitbook",
     "lint": "eslint src",
     "start": "node ./bin/www",
-    "test": "NODE_PATH=src mocha --recursive test/unit"
+    "test": "NODE_PATH=src mocha --recursive test/unit",
+    "jenkins:merge": "npm prune && npm --verbose i"
   },
   "dependencies": {
     "babel-core": "^6.1.21",
