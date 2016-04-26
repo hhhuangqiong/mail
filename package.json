@@ -7,7 +7,9 @@
     "lint": "eslint src",
     "start": "node ./bin/www",
     "test": "NODE_PATH=src mocha --recursive test/unit",
-    "jenkins:merge": "npm prune && npm --verbose i"
+    "jenkins": "npm prune && npm --verbose i",
+    "jenkins:commit": "npm run jenkins && npm run test",
+    "jenkins:merge": "npm run jenkins"
   },
   "dependencies": {
     "babel-core": "^6.1.21",
