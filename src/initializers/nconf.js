@@ -11,7 +11,7 @@ import nconf from 'nconf';
  * @param {string} [opts.envSeparator=__]
  * @return {Object} nconf
  */
-export default function initialize(configDir, opts = {}) {
+module.exports = function initialize(configDir, opts = {}) {
   nconf.argv();
   nconf.env(opts.envSeparator || '__');
 
@@ -29,4 +29,4 @@ export default function initialize(configDir, opts = {}) {
   console.info('Loading files under "%s"', configDir); // eslint-disable-line no-console
 
   return nconf;
-}
+};

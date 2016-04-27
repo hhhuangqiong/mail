@@ -1,8 +1,9 @@
 import Bottle from 'bottlejs';
 import path from 'path';
 
+import EmailService from '../services/Email';
+
 const transport = require('../mailer/transports/smtp');
-const EmailService = require('../services/Email');
 const Mailer = require('../mailer/mailer');
 const TemplateMailer = require('../mailer/templateMailer');
 
@@ -13,7 +14,7 @@ const TemplateMailer = require('../mailer/templateMailer');
  *
  * @param {*} nconf nconf instance
  */
-export default function init(nconf) {
+module.exports = function init(nconf) {
   // intentionally not calling with `new`;
   // otherwise `fetchContainerInstance` cannot work
   const ioc = Bottle(nconf.get('containerName')); // eslint-disable-line new-cap
@@ -32,4 +33,4 @@ export default function init(nconf) {
   ioc.service('EmailService', EmailService, 'TemplateMailer');
 
   return ioc;
-}
+};

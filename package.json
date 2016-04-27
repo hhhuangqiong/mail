@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "babel-core": "^6.1.21",
-    "babel-plugin-add-module-exports": "^0.1.1",
     "babel-preset-es2015": "^6.1.18",
     "babel-preset-stage-2": "^6.1.18",
     "body-parser": "^1.15.0",
