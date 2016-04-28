@@ -9,7 +9,7 @@
     "test": "NODE_PATH=src mocha --recursive test/unit",
     "jenkins": "npm prune && npm --verbose i",
     "jenkins:commit": "npm run jenkins && npm run test",
-    "jenkins:merge": "npm run jenkins"
+    "jenkins:merge": "npm run jenkins && npm run doc -- build"
   },
   "dependencies": {
     "babel-core": "^6.1.21",
