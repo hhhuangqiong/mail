@@ -23,7 +23,7 @@ if (logstashTransport) {
 
 require('./initializers/ioc')(nconf);
 require('./initializers/logging')(nconf.get('logging:winston'));
-require('./initializers/database')(nconf.get('mongodb:uri'), nconf.get('mongodb:options'));
+const mongoose = require('./initializers/database')(nconf.get('mongodb:uri'), nconf.get('mongodb:options'));
 
 const app = express();
 app.use(require('morgan')('dev'));
@@ -34,7 +34,11 @@ app.use(require('express-validator')());
 app.use('/', require('./routes/index'));
 
 // integrate m800 common
-healthcheck(app);
+healthcheck(app, {
+  mongodb: {
+    mongoose
+  }
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
