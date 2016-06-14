@@ -10,9 +10,9 @@ const mongoose = require('mongoose');
  *
  * @param {string} mongoURI MongoDB connection URI
  * @param {Object} mongoOpts MongoDB connection options
- * @param {Function} [cb]
+ * @param {Function} Initialized mongoose instance
  */
-function initialize(mongodbURI, mongodbOpts, cb) {
+function initialize(mongodbURI, mongodbOpts) {
   if (!mongodbURI || !mongodbOpts) {
     throw new Error('Both uri & options are required');
   }
@@ -37,9 +37,7 @@ function initialize(mongodbURI, mongodbOpts, cb) {
     });
   });
 
-  if (_.isFunction(cb)) {
-    cb();
-  }
+  return mongoose;
 }
 
 module.exports = initialize;
