@@ -1,9 +1,11 @@
 /** @module initializers/database */
 
-import _ from 'lodash';
 import logger from 'winston';
+import mongoose from 'mongoose';
+import Promise from 'bluebird';
 
-const mongoose = require('mongoose');
+// Use bluebird promises instead of mpromise
+mongoose.Promise = Promise;
 
 /**
  * Initialize database connection
