@@ -19,19 +19,36 @@ function initialize(mongodbURI, mongodbOpts) {
     throw new Error('Both uri & options are required');
   }
 
+  const { debug, ...mongoOption } = mongodbOpts;
+  mongoose.set('debug', !!debug);
+
   // TODO filter sensitive information (e.g., password)
-  logger.info('Connecting to Mongo on "%s" with %j', mongodbURI, mongodbOpts, {});
+  logger.info('Connecting to Mongo on "%s" with %j', mongodbURI, mongoOption, {});
   mongoose.connect(mongodbURI, mongodbOpts);
 
-  ['open', 'connected', 'disconnected', 'close'].forEach((evt) => {
-    mongoose.connection.on(evt, () => {
-      logger.info('mongoose connection', evt);
+  ['open', 'connecting', 'connected', 'reconnected', 'disconnected', 'close', 'fullsetup']
+    .forEach(evt => {
+      mongoose.connection.on(evt, () => {
+        logger.info(`Mongoose connection is ${evt}.`);
+      });
     });
+
+  mongoose.connection.on('error', error => {
+    logger.error(`Error connecting to MongoDB : ${error.message}`, error);
   });
 
-  mongoose.connection.on('error', err => {
-    logger.error(err);
-  });
+  // monitor the replicaset
+  if (mongoose.connection.db.serverConfig.s.replset) {
+    ['joined', 'left'].forEach(evt => {
+      mongoose.connection.db.serverConfig.s.replset.on(evt, (type, serverObj) => {
+        logger.info(`Replset event: ${type} ${evt}`, serverObj.ismaster);
+      });
+    });
+
+    mongoose.connection.db.serverConfig.s.replset.on('error', error => {
+      logger.error(`Replset error: ${error.message}`, error);
+    });
+  }
 
   process.on('SIGINT', () => {
     mongoose.connection.close(() => {

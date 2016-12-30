@@ -21,7 +21,8 @@ Configuration to the container can be specified through Enviornment variables. T
 | Field | Descriptions | e.g. |
 | ---   | --- | --- |
 | TZ | Server Timezone | Asia/Hong_Kong |
-| mongodb__uri | Mongo DB URI (without | mongodb://192.168.119.71/m800-mail-service | 
+| mongodb__uri | Mongo DB URI (without | mongodb://192.168.119.71/m800-mail-service |
 | mongodb\_\_options__user | Mongo DB username | mailsvc-testbed-user |
 | mongodb\_\_options__pass | Mongo DB passowrd | oXWd4bZT |
 | mongodb\_\_options\_\_server\_\_socketOptions__connectTimeoutMS | Mongo DB socket timeout (in ms) | 30000 |
+| mongodb\_\_options\_\_debug | Enable the mongoose debug | true |
