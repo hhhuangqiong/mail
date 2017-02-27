@@ -36,8 +36,8 @@ app.use('/', require('./routes/index'));
 // integrate m800 common
 healthcheck(app, {
   mongodb: {
-    mongoose
-  }
+    mongoose,
+  },
 });
 
 // catch 404 and forward to error handler
