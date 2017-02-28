@@ -53,7 +53,7 @@ export default class EmailService {
       email.set('meta.subject', info.render.subject);
       return email.save();
     }).catch(emailErr => {
-      const message = emailErr instanceof MongooseError?'Fail to persist':'Fail to send';
+      const message = emailErr instanceof MongooseError ? 'Fail to persist' : 'Fail to send';
       logger.error(message, emailErr);
       throw emailErr;
     }).asCallback(cb);
